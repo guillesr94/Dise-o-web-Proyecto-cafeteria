@@ -1,0 +1,24 @@
+.timetable-centered th {
+  text-align: center !important;
+  justify-content: center !important;
+  display: table-cell !important;
+}
+.timetable-centered {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px; /* ajusta según necesidad */
+  table-layout: fixed;
+  text-align: center;
+}
+
+.table-container{
+  max-width: 500px; /* Ajustalo al tamaño deseado */
+  margin: 0 auto;  
+}
+
+.timetable-title {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}

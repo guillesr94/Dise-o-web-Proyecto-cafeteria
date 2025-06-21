@@ -1,0 +1,23 @@
+/* Hover */
+.navbar-item:hover {
+  background-color: #a4a1a1 !important;
+  color: #fff !important;
+}
+
+/* Activo */
+.navbar-item.active,
+.navbar-menu.is-active .navbar-item.active {
+  background-color: #e4e1e1 ;
+  color: #000000 ;
+}
+
+
+/* celu */
+
+.navbar-menu.is-active {
+  background-color: #ffffff ;
+}
+
+.navbar-burger span {
+  background-color: rgb(0, 0, 0) ; /* Cambia "red" por el color que quieras */
+}
