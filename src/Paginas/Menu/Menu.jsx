@@ -73,6 +73,22 @@ export default function Menu(){
                     boxShadow: 'none'
                   }}
                 >
+
+                  {/* Imagen dinámica */}
+                  <div className="card-image p-3">
+                    {product.image_url ? (
+                      <figure className="image is-4by3">
+                        <img 
+                          src={product.image_url} 
+                          alt={product.name}
+                          style={{ objectFit: "cover" }}
+                        />
+                      </figure>
+                    ) : (
+                      <p className="is-size-1 has-text-centered">☕</p>
+                    )}
+                  </div>
+
                   <div 
                     className="card-content has-text-centered"
                     style={{ 
@@ -81,7 +97,6 @@ export default function Menu(){
                       flexDirection: 'column' 
                     }}
                   >
-                    <p className="is-size-1">☕</p>
                     <p className="title is-4 has-text-black">{product.name}</p>
                     <p className="subtitle is-6 has-text-black mb-4">
                       {product.description}
@@ -110,6 +125,7 @@ export default function Menu(){
                       Agregar al pedido
                     </button>
                   </footer>
+
                 </div>
               </div>
             ))}
