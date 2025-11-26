@@ -8,7 +8,8 @@ export default function Menu(){
   const [addedIds, setAddedIds] = useState([]);
   const URL_BASE = window.location.hostname === "localhost"
   ? "http://localhost:8080"
-  : "https://TU_BACKEND_EN_PRODUCCION.com";
+  : "http://localhost:8080/get/products";
+  
 
   console.log("Conectando a:", `${URL_BASE}/get/products`);
 
@@ -55,6 +56,9 @@ export default function Menu(){
 
   console.log("Enviando pedido...");
   alert("Pedido enviado (Mira WhatsApp)");
+
+  setCart([]);
+  setAddedIds([]);
   };
 
   return (
