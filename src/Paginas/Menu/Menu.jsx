@@ -8,7 +8,7 @@ export default function Menu(){
   const [addedIds, setAddedIds] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/get/products')
+    axios.get("https://disenioweb-proyecto-cafeteria.netlify.app")
       .then(response => {
         setProducts(response.data);
       })
@@ -24,8 +24,8 @@ export default function Menu(){
     }, 2000);
   };
 
-  const removeProduct = (productId) => {
-    setCart(cart.filter((item) => item.id !== productId));
+  const removeProduct = (indexToRemove) => {
+    setCart(cart.filter((_, index) => index !== indexToRemove));
   };
 
   const total = cart.reduce((sum, item) => sum + item.price, 0);
@@ -42,7 +42,6 @@ export default function Menu(){
 
   const mensajeCodificado = encodeURIComponent(mensaje);
 
-  // PONÉ TU NUMERO ACA
   const numero = "542236811353";
 
   window.open(`https://wa.me/${numero}?text=${mensajeCodificado}`, '_blank');
@@ -143,7 +142,7 @@ export default function Menu(){
                     {item.name} - <strong>${item.price}</strong>
                     <button 
                       className="delete is-small ml-2 has-background-black" 
-                      onClick={() => removeProduct(item.id)}
+                      onClick={() => removeProduct(index)}
                     ></button>
                   </span>
                 ))}
