@@ -8,7 +8,7 @@ export default function Menu(){
   const [addedIds, setAddedIds] = useState([]);
   const URL_BASE = window.location.hostname === "localhost"
   ? "http://localhost:8080"
-  : "http://localhost:8080/get/products";
+  : "https://disenioweb-proyecto-cafeteria.netlify.app/menu";
   
 
   console.log("Conectando a:", `${URL_BASE}/get/products`);
