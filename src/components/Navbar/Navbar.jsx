@@ -46,9 +46,9 @@ function Navbar() {
             Contacto
           </NavLink>
 
-          <NavLink className="navbar-item has-text-black" to="menu" onClick={() => setIsActive(false)}>
+          {/* <NavLink className="navbar-item has-text-black" to="menu" onClick={() => setIsActive(false)}>
             Menu
-          </NavLink>
+          </NavLink> */}
         </div>
       </div>
     </nav>
