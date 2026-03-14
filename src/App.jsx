@@ -7,6 +7,7 @@ import Home from './Paginas/Home/Home'
 import Contact from './Paginas/Contact/Contact'
 import About from './Paginas/About/About'
 import Menu from './Paginas/Menu/Menu'
+import ButtonWhatsapp from './components/ButtonWhatsapp/ButtonWhatsapp'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -24,6 +25,7 @@ function App() {
         </Routes>
       </main>
       <Footer/>
+      <ButtonWhatsapp/>
     </Router>
     </>
   )
