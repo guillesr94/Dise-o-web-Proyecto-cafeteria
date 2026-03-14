@@ -1,6 +1,13 @@
 import React from 'react'
 import Food from "../../../public/pictures/food.jpg"
+
+
 function NewProduct() {
+  // Preparamos el enlace directo para que te pidan esta merienda
+  const numeroTelefono = "5492230000000";
+  const mensaje = "Hola, ¡quiero pedir la Nueva Merienda Tentación!";
+  const whatsappUrl = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
+
   return (
     <>
     <section className="section">
@@ -10,8 +17,30 @@ function NewProduct() {
           <h2 className="subtitle has-text-black">
             ¡Descubrí la Nueva Merienda Tentación!
           </h2>
-          <p className='has-text-black'>Deliciosas medialunas recién horneadas, acompañadas de un cappuccino espumoso o té a elección.
-Incluye una mini torta casera y jugo natural de estación.</p>
+          {/* Agregué un mb-5 (margin-bottom) para separar el texto del botón */}
+          <p className='has-text-black mb-5'>
+            Deliciosas medialunas recién horneadas, acompañadas de un cappuccino espumoso o té a elección.
+            Incluye una mini torta casera y jugo natural de estación.
+          </p>
+
+          {/* Agregamos el botón de WhatsApp respetando tus estilos limpios */}
+          <a 
+            href={whatsappUrl} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="button is-success has-text-weight-bold"
+            style={{ 
+              backgroundColor: '#25D366', 
+              color: 'white', 
+              borderRadius: '8px', 
+              border: 'none', 
+              transition: 'all 0.3s ease' 
+            }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+          >
+            👉 Pedir esta Merienda
+          </a>
         </div>
 
         <div className="column is-12-mobile is-6-tablet">

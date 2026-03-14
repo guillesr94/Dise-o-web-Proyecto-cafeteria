@@ -5,8 +5,8 @@ import TimeTable from '../../components/TimeTable/TimeTable'
 function About() {
   return (
    <>
-    <Info/>
     <TimeTable/>
+    <Info/>
    </>
   )
 }
