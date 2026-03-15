@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import emailjs from '@emailjs/browser';
+
+
 function Contact() {
   const [form, setForm] = useState({
     user_name: "",
     user_email: "",
     message: "",
   });
+
+  // Estados para el feedback visual
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const handleChange = (e) => {
     setForm({
@@ -15,17 +21,20 @@ function Contact() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
+    setLoading(true); // Empieza a cargar
     
-    // USANDO TUS NUEVOS IDS: service_llxqfw3 y template_wsjrvsv
     emailjs.sendForm('service_llxqfw3', 'template_wsjrvsv', e.target, 'IR-b-zlIOq5njOTDS')
       .then((result) => {
-        console.log('Email enviado:', result.text);
-        alert("¡Mensaje enviado con éxito!");
-        setForm({ user_name: "", user_email: "", message: "" }); // Limpia el estado
+        setLoading(false); // Deja de cargar
+        setSent(true);    // Muestra mensaje de éxito
+        setForm({ user_name: "", user_email: "", message: "" });
+        
+        // Ocultar el mensaje de éxito después de 5 segundos
+        setTimeout(() => setSent(false), 5000);
       }, (error) => {
-        console.log('Error al enviar email:', error.text);
-        alert("Hubo un error: " + error.text);
+        setLoading(false);
+        alert("Error al enviar: " + error.text);
       });
   };
 
@@ -42,9 +51,9 @@ function Contact() {
                   <input
                     className="input has-background-light has-text-black"
                     type="text"
-                    name="user_name" // Coincide con el name del state
+                    name="user_name"
                     placeholder="Escribí tu nombre"
-                    value={form.user_name} // CORREGIDO: antes decía form.nombre
+                    value={form.user_name}
                     onChange={handleChange}
                     required
                   />
@@ -55,7 +64,7 @@ function Contact() {
                     type="email"
                     name="user_email"
                     placeholder="Escribí tu mail"
-                    value={form.user_email} // CORREGIDO: antes decía form.email
+                    value={form.user_email}
                     onChange={handleChange}
                     required
                   />
@@ -65,14 +74,25 @@ function Contact() {
                     className="textarea has-background-light has-text-black"
                     name="message"
                     placeholder="Escribí tu mensaje"
-                    value={form.message} // CORREGIDO: antes decía form.mensaje
+                    value={form.message}
                     onChange={handleChange}
                     required
                   />
                   
-                  <button type="submit" className="button is-grey-lighter mt-4">
-                    Enviar
+                  <button 
+                    type="submit" 
+                    className={`button is-black mt-4 ${loading ? 'is-loading' : ''}`}
+                    disabled={loading}
+                  >
+                    {loading ? "Cargando..." : "Enviar"}
                   </button>
+
+                  {/* Feedback visual abajo del botón */}
+                  {sent && (
+                    <p className="has-text-success is-size-6 mt-3 has-text-weight-bold">
+                      ¡Enviado con éxito!
+                    </p>
+                  )}
                 </form>
               </div>
             </div>
