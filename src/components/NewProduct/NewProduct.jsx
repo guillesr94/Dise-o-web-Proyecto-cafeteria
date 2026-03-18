@@ -4,7 +4,7 @@ import Food from "../../../public/pictures/food.jpg"
 
 function NewProduct() {
   // Preparamos el enlace directo para que te pidan esta merienda
-  const numeroTelefono = "5492230000000";
+  const numeroTelefono = "5492236811353";
   const mensaje = "Hola, ¡quiero pedir la Nueva Merienda Tentación!";
   const whatsappUrl = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
 

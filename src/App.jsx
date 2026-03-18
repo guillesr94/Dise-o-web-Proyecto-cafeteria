@@ -6,8 +6,8 @@ import Footer from './components/Footer/Footer'
 import Home from './Paginas/Home/Home'
 import Contact from './Paginas/Contact/Contact'
 import About from './Paginas/About/About'
-import Menu from './Paginas/Menu/Menu'
 import ButtonWhatsapp from './components/ButtonWhatsapp/ButtonWhatsapp'
+import Menu from './Paginas/Menu/Menu'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -21,7 +21,7 @@ function App() {
            <Route path="/" element={<Home />} />
            <Route path="/contact" element={<Contact />} />
            <Route path="/about" element={<About/>}/>
-           {/* <Route path="/menu" element={<Menu/>}/> */}
+           <Route path="/menu" element={<Menu/>}/>
         </Routes>
       </main>
       <Footer/>

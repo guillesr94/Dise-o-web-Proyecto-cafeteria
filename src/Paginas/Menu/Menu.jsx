@@ -1,194 +1,143 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+export default function Menu() {
+  const ejemplos = [
+    { id: 1, name: "Espresso", description: "Café intenso y corto", price: 1500, category: "Cafeteria" },
+    { id: 2, name: "Latte Clásico", description: "Espresso con abundante leche emulsionada", price: 2200, category: "Cafeteria" },
+    { id: 3, name: "Flat White", description: "Doble ristretto con leche finamente texturizada", price: 2500, category: "Cafeteria" },
+    { id: 4, name: "Medialuna de Manteca", description: "Clásica medialuna dulce", price: 800, category: "Dulce" },
+    { id: 5, name: "Porción de Chocotorta", description: "Capas de galletitas, dulce de leche y queso crema", price: 3500, category: "Dulce" },
+    { id: 7, name: "Tostado de Miga", description: "Jamón y queso en pan de miga tostado", price: 3000, category: "Salado" },
+    { id: 8, name: "Sándwich de Crudo", description: "Jamón crudo, queso brie y rúcula", price: 4800, category: "Salado" }
+  ];
 
-export default function Menu(){
-
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(ejemplos); 
   const [cart, setCart] = useState([]);
   const [addedIds, setAddedIds] = useState([]);
-  const URL_BASE = window.location.hostname === "localhost"
-  ? "http://localhost:8080"
-  : "https://disenioweb-proyecto-cafeteria.netlify.app/menu";
-  
+  const [categoriaActual, setCategoriaActual] = useState("Todos");
 
-  console.log("Conectando a:", `${URL_BASE}/get/products`);
+  const formatearPrecio = (numero) => {
+    return new Intl.NumberFormat('en-US').format(numero);
+  };
 
-  useEffect(() => {
-    axios.get(`${URL_BASE}/get/products`)
-      .then(response => {
-        setProducts(response.data);
-      })
-      .catch(error => console.error(error));
-  }, []);
+  const productosFiltrados = categoriaActual === "Todos"
+    ? products
+    : products.filter((product) => product.category === categoriaActual);
 
   const addProduct = (product) => {
-  const uniqueItem = { ...product, cartId: crypto.randomUUID() };
-
-  setCart((prev) => [...prev, uniqueItem]);
-  setAddedIds((prev) => [...prev, product.id]);
-
-  setTimeout(() => {
-    setAddedIds((prev) => prev.filter((id) => id !== product.id));
-  }, 2000);
-};
+    const uniqueItem = { ...product, cartId: crypto.randomUUID() };
+    setCart((prev) => [...prev, uniqueItem]);
+    setAddedIds((prev) => [...prev, product.id]);
+    setTimeout(() => {
+      setAddedIds((prev) => prev.filter((id) => id !== product.id));
+    }, 1000);
+  };
 
   const removeProduct = (cartId) => {
-  setCart((prev) => prev.filter((item) => item.cartId !== cartId));
-};
+    setCart((prev) => prev.filter((item) => item.cartId !== cartId));
+  };
 
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   const sendOrder = () => {
-    let mensaje = "Hola! Recorda enviar la transferencia para que empezemos a prepar tu pedido:\n\n El alias es : Guille_cafeteria\n\n";
+    let mensaje = "Hola! Recorda enviar la transferencia para empezar a preparar tu pedido:\n\nAlias: Guille_cafeteria\n\n";
+    
+    const resumen = cart.reduce((acc, item) => {
+      acc[item.name] = acc[item.name] || { cantidad: 0, precio: item.price };
+      acc[item.name].cantidad += 1;
+      return acc;
+    }, {});
 
-    cart.forEach((item, index) => {
-    mensaje += `- Pedido ${index + 1}:\n`;
-    mensaje += `- ${item.name} ($${item.price})\n\n`;
-  });
+    Object.entries(resumen).forEach(([nombre, data]) => {
+      mensaje += `- ${nombre} ($${formatearPrecio(data.precio)}) x${data.cantidad}\n`;
+    });
 
-  mensaje += `*TOTAL: $${total}*`;
-
-  const mensajeCodificado = encodeURIComponent(mensaje);
-
-  const numero = "542236811353";
-
-  window.open(`https://wa.me/${numero}?text=${mensajeCodificado}`, '_blank');
-
-  console.log("Enviando pedido...");
-  alert("Pedido enviado (Mira WhatsApp)");
-
-  setCart([]);
-  setAddedIds([]);
+    mensaje += `\n*TOTAL: $${formatearPrecio(total)}*`;
+    const numero = "542236811353"; 
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    setCart([]);
   };
 
+  const categorias = ["Todos", "Cafeteria", "Dulce", "Salado"];
+
   return (
-    <>
-      <section className="section">
-        <div className="container">
-          <h1 className="title is-2 has-text-centered mb-6 has-text-black">
-            ☕ Cafetería
-          </h1>
+    <section className="section">
+      <div className="container" style={{ maxWidth: "1050px" }}>
+        <h1 className="title is-2 has-text-centered mb-5 has-text-black">☕ Nuestro Menú</h1>
 
-          <div className="columns is-multiline">
-            {products.map((product) => (
-              <div className="column is-one-quarter" key={product.id}>
-                <div
-                  className="card has-background-light has-text-black"
-                  style={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    border: "1px solid #dbdbdb",
-                    boxShadow: "none",
-                  }}
-                >
-                  {/* Imagen dinámica */}
-                  <div className="card-image p-3">
-                    {product.image_url ? (
-                      <figure className="image is-4by3">
-                        <img
-                          src={product.image_url}
-                          alt={product.name}
-                          style={{ objectFit: "cover" }}
-                        />
-                      </figure>
-                    ) : (
-                      <p className="is-size-1 has-text-centered">☕</p>
-                    )}
-                  </div>
-
-                  <div
-                    className="card-content has-text-centered"
-                    style={{
-                      flex: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <p className="title is-4 has-text-black">{product.name}</p>
-                    <p className="subtitle is-6 has-text-black mb-4">
-                      {product.description}
-                    </p>
-
-                    <div style={{ marginTop: "auto" }}>
-                      <p className="title is-5 has-text-black has-text-weight-bold mb-2">
-                        ${product.price}
-                      </p>
-
-                      <div style={{ minHeight: "24px" }}>
-                        {addedIds.includes(product.id) && (
-                          <p
-                            className="is-size-7 has-text-black has-text-weight-bold"
-                            style={{
-                              textTransform: "uppercase",
-                              letterSpacing: "1px",
-                            }}
-                          >
-                            Agregado
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <footer
-                    className="card-footer"
-                    style={{ borderTop: "none", padding: "1rem" }}
-                  >
-                    <button
-                      className="button is-black is-outlined is-fullwidth is-rounded"
-                      onClick={() => addProduct(product)}
-                    >
-                      Agregar al pedido
-                    </button>
-                  </footer>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <hr />
-
-          {cart.length > 0 && (
-            <div
-              className="notification is-light has-text-black"
-              style={{ border: "1px solid #dbdbdb" }}
+        <div className="buttons is-centered mb-4">
+          {categorias.map((cat) => (
+            <button
+              key={cat}
+              className={`button is-rounded ${categoriaActual === cat ? "is-black" : "is-light"}`}
+              onClick={() => setCategoriaActual(cat)}
             >
-              <h2 className="title is-4 has-text-black">Tu Pedido</h2>
+              {cat}
+            </button>
+          ))}
+        </div>
 
-              {cart.map((item, index) => (
-                <span
-                  className="tag is-white has-text-black"
-                  key={index}
-                  style={{ border: "1px solid #000" }}
-                >
-                  {item.name} - <strong>${item.price}</strong>
-                  <button
-                    className="delete is-small ml-2 has-background-black"
-                    onClick={() => removeProduct(item.cartId)}
-                  ></button>
-                </span>
-              ))}
+        <h2 className="subtitle is-6 has-text-centered has-text-grey mb-6">
+          Después de agregar productos, revisá el carrito abajo de todo 👇
+        </h2>
 
-              <div className="level mt-4">
-                <div className="level-left">
-                  <div className="level-item">
-                    <h3 className="title is-3 has-text-black">
-                      Total: ${total.toFixed(2)}
-                    </h3>
+        <div className="columns is-multiline is-mobile is-tablet is-desktop">
+          {productosFiltrados.map((product) => (
+            <div className="column is-12-mobile is-6-tablet is-4-desktop" key={product.id}>
+              <div 
+                className="box has-background-light p-4" 
+                style={{ height: "100%", display: "flex", flexDirection: "column", border: "1px solid #dbdbdb", boxShadow: "none" }}
+              >
+                <div className="is-flex is-justify-content-space-between is-align-items-start mb-4">
+                  <div style={{ paddingRight: '10px' }}>
+                    <p className="title is-5 has-text-black mb-1">{product.name}</p>
+                    <p className="subtitle is-7 has-text-grey">{product.description}</p>
                   </div>
+                  <div className="has-text-right">
+                    <p className="title is-5 has-text-black" style={{ whiteSpace: 'nowrap' }}>
+                      ${formatearPrecio(product.price)}
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ marginTop: "auto" }}>
                   <button
-                    className="button is-black is-medium"
-                    onClick={sendOrder}
+                    className={`button is-fullwidth is-small ${addedIds.includes(product.id) ? "is-success" : "is-black is-outlined"}`}
+                    onClick={() => addProduct(product)}
                   >
-                    Pedir
+                    {addedIds.includes(product.id) ? "✓ Agregado" : "+ Agregar al pedido"}
                   </button>
                 </div>
               </div>
             </div>
-          )}
+          ))}
         </div>
-      </section>
-    </>
+
+        <hr />
+
+        {cart.length > 0 && (
+          <div className="notification is-light has-text-black" style={{ border: "1px solid #dbdbdb" }}>
+            <h2 className="title is-4 has-text-black">Tu Pedido</h2>
+            <div className="tags are-medium mb-4">
+              {cart.map((item) => (
+                <span className="tag is-white has-text-black" key={item.cartId} style={{ border: "1px solid #000" }}>
+                  {item.name} - <strong>${formatearPrecio(item.price)}</strong>
+                  <button className="delete is-small ml-2 has-background-black" onClick={() => removeProduct(item.cartId)}></button>
+                </span>
+              ))}
+            </div>
+            <div className="level is-mobile">
+              <div className="level-left">
+                <h3 className="title is-4 has-text-black m-0">Total: ${formatearPrecio(total)}</h3>
+              </div>
+              <div className="level-right">
+                {/* BOTÓN AHORA EN VERDE (is-success) */}
+                <button className="button is-success" onClick={sendOrder}>Pedir por WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
