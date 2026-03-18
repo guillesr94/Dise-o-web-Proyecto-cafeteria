@@ -42,13 +42,14 @@ function Navbar() {
             Acerca de nosotros
           </NavLink>
 
+          <NavLink className="navbar-item has-text-black" to="menu" onClick={() => setIsActive(false)}>
+            Menu
+          </NavLink>
+          
           <NavLink className="navbar-item has-text-black" to="contact" onClick={() => setIsActive(false)}>
             Contacto
           </NavLink>
 
-          <NavLink className="navbar-item has-text-black" to="menu" onClick={() => setIsActive(false)}>
-            Menu
-          </NavLink>
         </div>
       </div>
     </nav>
