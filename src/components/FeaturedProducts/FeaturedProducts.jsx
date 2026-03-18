@@ -41,7 +41,7 @@ function FeaturedProducts() {
     }
   ];
 
-  const numeroTelefono = "5492236811353"; // Cambiar por el del cliente
+  const numeroTelefono = "549222222222222"; // Cambiar por el del cliente
 
   return (
     // CAMBIO CLAVE: Usamos "has-background-white" para forzar el blanco puro

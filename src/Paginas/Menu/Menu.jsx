@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
+
 export default function Menu() {
   const ejemplos = [
     { id: 1, name: "Espresso", description: "Café intenso y corto", price: 1500, category: "Cafeteria" },
@@ -53,7 +55,7 @@ export default function Menu() {
     });
 
     mensaje += `\n*TOTAL: $${formatearPrecio(total)}*`;
-    const numero = "542236811353"; 
+    const numero = "542222222222"; 
     window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
     setCart([]);
   };
